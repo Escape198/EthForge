@@ -1,0 +1,26 @@
+import click
+from core.wallet import generate_wallet
+from core.signer import sign_message
+
+
+@click.group()
+def cli():
+    pass
+
+
+@cli.command()
+def create():
+    wallet = generate_wallet()
+    click.echo(wallet)
+
+
+@cli.command()
+@click.option('--private-key', prompt=True, hide_input=True)
+@click.option('--message', prompt=True)
+def sign(private_key, message):
+    signature = sign_message(private_key, message)
+    click.echo(f"Signature: {signature}")
+
+
+if __name__ == "__main__":
+    cli()
