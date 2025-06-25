@@ -1,0 +1,8 @@
+fastapi==0.115.0
+uvicorn==0.22.0
+eth-account==0.13.3
+mnemonic==0.21
+pydantic==2.9.2
+fastapi-limiter
+redis
+web3
