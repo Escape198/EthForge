@@ -1,0 +1,35 @@
+from fastapi import FastAPI
+from pydantic import BaseModel
+from core.wallet import generate_wallet
+from core.signer import sign_message
+
+
+app = FastAPI()
+
+
+class SignRequest(BaseModel):
+    private_key: str
+    message: str
+
+
+class VerifyRequest(BaseModel):
+    address: str
+    message: str
+    signature: str
+
+
+@app.get("/wallet/create")
+def create_wallet():
+    return generate_wallet()
+
+
+@app.post("/wallet/sign")
+def sign(req: SignRequest):
+    signature = sign_message(req.private_key, req.message)
+    return {"signature": signature}
+
+
+@app.post("/wallet/verify")
+def verify(req: VerifyRequest):
+    from core.verifier import verify_signature
+    return {"valid": verify_signature(req.address, req.message, req.signature)}
